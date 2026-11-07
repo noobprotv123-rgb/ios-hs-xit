@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xit HS Pro - iOS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Xit HS Pro</h1>
+        
+        <!-- Área de Chave -->
+        <div class="card">
+            <h2>🔑 Chave de Acesso</h2>
+            <input type="text" id="apiKey" placeholder="Cole sua chave aqui..." readonly>
+            <button id="generateKey" onclick="generateKey()">Gerar Nova Chave</button>
+            <p id="status" class="status inactive">Inativo</p>
+        </div>
+
+        <!-- Controles de HS -->
+        <div class="card" id="controls" style="display: none;">
+            <h2>⚙️ Opções Ativas</h2>
+            
+            <label for="neckScale">HS Pescoço:</label>
+            <input type="range" id="neckScale" min="0.5" max="2.0" step="0.1" value="1.0" oninput="updateValue('neck', this.value)">
+            <span id="neckValue">1.0x</span>
+
+            <label for="shoulderWidth">HS Hombridade:</label>
+            <input type="range" id="shoulderWidth" min="0.5" max="2.0" step="0.1" value="1.0" oninput="updateValue('shoulders', this.value)">
+            <span id="shoulderValue">1.0x</span>
+
+            <button id="applyBtn" onclick="applyConfig()">Aplicar no Jogo</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
