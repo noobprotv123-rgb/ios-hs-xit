@@ -3,36 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xit HS Pro - iOS</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Xit HS Pro</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #000; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { width: 90%; max-width: 400px; text-align: center; }
+        .card { background-color: #1a1a1a; padding: 20px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #00ffcc; }
+        h3 { margin-top: 0; color: #ccc; }
+        input[type="text"] { width: 90%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #444; background-color: #333; color: white; font-size: 16px; text-align: center; }
+        button { background-color: #007aff; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; font-size: 16px; margin-top: 5px; }
+        button:active { opacity: 0.8; }
+        .status { margin-top: 10px; font-size: 14px; font-weight: bold; }
+        .inactive { color: #ff3b30; }
+        .active { color: #34c759; }
+        #controls { display: none; } /* Começa escondido */
+        label { display: block; text-align: left; margin-top: 15px; color: #aaa; font-size: 14px; }
+        input[type="range"] { width: 100%; margin-top: 5px; }
+        .value-display { float: right; color: #007aff; }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎮 Xit HS Pro</h1>
-        
-        <!-- Área de Chave -->
-        <div class="card">
-            <h2>🔑 Chave de Acesso</h2>
-            <input type="text" id="apiKey" placeholder="Cole sua chave aqui..." readonly>
-            <button id="generateKey" onclick="generateKey()">Gerar Nova Chave</button>
-            <p id="status" class="status inactive">Inativo</p>
-        </div>
 
-        <!-- Controles de HS -->
-        <div class="card" id="controls" style="display: none;">
-            <h2>⚙️ Opções Ativas</h2>
-            
-            <label for="neckScale">HS Pescoço:</label>
-            <input type="range" id="neckScale" min="0.5" max="2.0" step="0.1" value="1.0" oninput="updateValue('neck', this.value)">
-            <span id="neckValue">1.0x</span>
+<div class="container">
+    <h1>🎮 Xit HS Pro</h1>
 
-            <label for="shoulderWidth">HS Hombridade:</label>
-            <input type="range" id="shoulderWidth" min="0.5" max="2.0" step="0.1" value="1.0" oninput="updateValue('shoulders', this.value)">
-            <span id="shoulderValue">1.0x</span>
-
-            <button id="applyBtn" onclick="applyConfig()">Aplicar no Jogo</button>
-        </div>
+    <!-- Cartão da Chave -->
+    <div class="card">
+        <h3>🔑 Chave de Acesso</h3>
+        <input type="text" id="apiKey" placeholder="Aguardando geração..." readonly>
+        <button onclick="gerarChave()">GERAR CHAVE DE ACESSO</button>
+        <p id="status" class="status inactive">❌ Inativo</p>
     </div>
-    <script src="script.js"></script>
+
+    <!-- Controles (Só aparecem depois de ativar) -->
+    <div class="card" id="controls">
+        <h3>⚙️ Configurações Ativas</h3>
+        
+        <label>Pescoço (HS): <span id="neckVal" class="value-display">1.0x</span></label>
+        <input type="range" id="neckRange" min="0.5" max="2.0" step="0.1" value="1.0" oninput="atualizar('pesco', this.value)">
+
+        <label>Ombros (HS): <span id="shoulderVal" class="value-display">1.0x</span></label>
+        <input type="range" id="shoulderRange" min="0.5" max="2.0" step="0.1" value="1.0" oninput="atualizar('ombro', this.value)">
+
+        <button onclick="aplicar()" style="background-color: #34c759; margin-top: 20px;">✅ APLICAR NO JOGO</button>
+    </div>
+</div>
+
+<script>
+    // Função para gerar chave
+    function gerarChave() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let key = 'PROXY-XHS-';
+        for(let i=0; i<8; i++) key += chars.charAt(Math.floor(Math.random() * chars.length));
+        
+        document.getElementById('apiKey').value = key;
+        
+        // ATIVA A INTERFACE
+        document.getElementById('status').innerText = "✅ Conectado ao Proxy";
+        document.getElementById('status').className = "status active";
+        document.getElementById('controls').style.display = 'block';
+        
+        console.log("Xit Ativo com chave: " + key);
+    }
+
+    // Atualiza os números na tela
+    function atualizar(tipo, valor) {
+        if(tipo === 'pesco') document.getElementById('neckVal').innerText = valor + 'x';
+        if(tipo === 'ombro') document.getElementById('shoulderVal').innerText = valor + 'x';
+    }
+
+    // Simula o envio para o proxy
+    function aplicar() {
+        const p = document.getElementById('neckRange').value;
+        const o = document.getElementById('shoulderRange').value;
+        alert(`✅ Aplicado!\nPescoço: ${p}x\nOmbros: ${o}x\nProxy sincronizado.`);
+    }
+</script>
+
 </body>
 </html>
